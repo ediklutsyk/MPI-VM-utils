@@ -1,0 +1,9 @@
+package_update: true
+package_upgrade: true
+packages:
+  - nfs-kernel-server
+  - nfs-common
+  - build-essential
+  - openmpi-bin
+  - openmpi-doc
+  - libopenmpi-dev
