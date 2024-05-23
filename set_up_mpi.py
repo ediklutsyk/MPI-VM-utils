@@ -36,9 +36,9 @@ def update_etc_hosts(vm_ips):
         logging.info(f"Updating /etc/hosts on {name}")
         for other_name, other_ip in vm_ips.items():
             if name != other_name:
-                subprocess.run(
-                    f"multipass exec {name} -- sudo bash -c \"echo '{other_ip} {other_name}' >> /etc/hosts\"",
-                    shell=True)
+                echo_command = f"multipass exec {name} -- sudo bash -c \"echo '{other_ip} {other_name}' >>"
+                subprocess.run(f"{echo_command} /etc/hosts\"", shell=True)
+                subprocess.run(f"{echo_command} /etc/cloud/templates/hosts.debian.tmpl\"", shell=True)
         logging.info(f"Updated /etc/hosts on {name}")
 
 
@@ -68,7 +68,7 @@ def setup_ssh_keys(ssh_keys):
                     f"multipass exec {vm_name} -- bash -c \"echo '{other_key}' >> /home/ubuntu/.ssh/authorized_keys\"",
                     shell=True)
                 subprocess.run(
-                    f"multipass exec {other_vm} -- ssh {vm_name} -q -o StrictHostKeyChecking=no echo $'#  {other_vm}'",
+                    f"multipass exec {other_vm} -- ssh {vm_name} -q -o StrictHostKeyChecking=no echo '{other_vm}'",
                     shell=True)
         logging.info(f"Finished setting up authorized keys for {vm_name}.")
 
